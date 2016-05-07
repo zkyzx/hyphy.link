@@ -1,35 +1,24 @@
-var mongodb = require('mongodb');
+var MongoClient = require('mongodb').MongoClient;
 
-mongoConnect = function(callback){
-    var MongoClient = mongodb.MongoClient;
+exports = module.exports.genRandomString = function(){
+   // Generate random 5 character alphanumeric.
+   return Math.random().toString(36).substr(2,5).toUpperCase();
+}
+
+
+exports = module.exports.insertLink = function(shortLink, origLink){
     var url = 'mongodb://localhost:27017/hldb';
 
-    MongoClient.connect(url, function(err, db){
-        if (err){
-            console.log('Unable to connect to the mongoDB server. Error:', err);
-        } else {
-            console.log("Connection established to", url);
-            callback(db);
-        }
-    });
-};
+    MongoClient.connect(url, function(err,db){
+        if (err) throw err;
+        console.log("connected to Database");
+        // new entry
+        var document = {"shortLink": shortLink, "longLink": origLink};
 
-
-exports = module.exports.updateLink = function(shortLink, originalLink){
-    mongoConnect(function(db){
-        db.collection("links").save(
-            {"shortlink":shortLink},
-            {"originalLink": originalLink},
-            function(err, data){
-                if(err){
-                    console.log(err);
-                    db.close();
-                }else{
-                    console.log("new link upserted successfully");
-                    db.close();
-                }
-            }
-        );
+        db.collection('links').insert(document, function(err, records){
+            if (err) throw err;
+            console.log(records);
+        });
     });
 };
 
