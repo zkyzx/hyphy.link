@@ -4,12 +4,9 @@ block content
   h1= title
   p Welcome to #{title}
 
-
-  div(id="urlIntake")
-    input(
-      type="text"
-      placeholder="Paste the URL to your video, and share."
-    )
-
-    button(id="intakeBtn").
-      Process URL
+  div(class="ui one column centered grid")
+    div(class="column six wide")
+      div(id="urlIntake", class="ui massive input", style="width: 100%;")
+        input(type="text",placeholder="Paste, shorten and share")
+        button(id="intakeBtn", class="ui button").
+          Shorten
