@@ -40,3 +40,19 @@ exports = module.exports.queryAll = function(){
         });
     });
 }
+
+
+exports = module.exports.validateUrl = function(url, callback){
+	// Validate if the target url is active or not.
+	  var http = require('http'),
+		options = {method: 'HEAD', host: url, port: 80, path: '/'},
+		req = http.request(options, function(r){
+		  callback({"error": false, "url": url});
+	    });
+
+        req.end();
+
+		req.on('error', function(err){
+			callback({"error" : true, "url": url});
+		})
+}

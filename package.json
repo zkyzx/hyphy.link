@@ -43,6 +43,7 @@
     "gulp-rtlcss": "~1.0.0",
     "gulp-header": "~1.8.2",
     "gulp-less": "~3.1.0",
-    "semantic-ui": "~2.1.8"
+    "semantic-ui": "~2.1.8",
+    "socket.io": "~1.4.6"
   }
 }
