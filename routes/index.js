@@ -18,8 +18,10 @@ router.get('/:url', function(req, res){
 			targetUrl = docs[0].longLink;
 			res.statusCode = 302;
 			res.redirect("http://" +targetUrl);
+        } else {
+console.log("test");
+          res.render('error', {message: 'test'});
         }
-		res.end();
     });
 });
 

@@ -77,3 +77,8 @@ position: absolute;
 width: 80px;
 top: 87px;
 }
+
+#error-msg{
+font-size:180px;
+color:white;
+}
