@@ -67,10 +67,12 @@ router.get('/', function(req, res, next) {
 router.get('/:url', function(req, res){
     url = req.url.replace('\/', '');
     Hlink.find({shortLink: url}, function(err, docs){
-        targetUrl = docs[0].longLink;
-        res.statusCode = 302;
-        res.redirect("http://" +targetUrl);
-        res.end();
+        if (docs[0]){
+			targetUrl = docs[0].longLink;
+			res.statusCode = 302;
+			res.redirect("http://" +targetUrl);
+        }
+		res.end();
     });
 });
 
