@@ -5,13 +5,59 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var functions = require("./functions.js");
+
+var mongoose = require('mongoose');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
 
 var app = express();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
 
+mongoose.connect('mongodb://127.0.0.1:27017/hldb', function(error){
+    if (error){
+        console.log(error);
+    }
+});
 
+var Schema = mongoose.Schema;
+var HlinkSchema = new Schema(({
+    shortLink: String,
+    longLink: String
+}))
+
+var Hlink = mongoose.model('links', HlinkSchema);
+
+// On submit, generate new short link and emit value back to client to display.
+io.on('connection', function(socket){
+  socket.on('link submit', function(link){
+  // strip protocol from url string to make it easier to use response.redirect
+    link = link.replace(/http:\/\/|https:\/\//i, '');
+	functions.validateUrl(link, function(status){
+	  if (!status.error){
+	    (function(){
+		  shortLink =  functions.genRandomString();
+		  originalLink = link;
+		  Hlink.find({shortLink: shortLink}, function(err, docs){
+		    if (docs[0]){
+		      console.log("Overwriting hlink" + docs[0].shortLink);
+		    };
+		  });
+
+		  functions.insertLink(shortLink, originalLink);
+		  socket.emit('link ready', "hyphy.link/" + shortLink);
+		  return false;
+		})();
+	  } else {
+	      console.log("an error occured while attempting to connect to "+ link);
+		  socket.emit('link error', "An error occured while attempting to shorten that url.");
+		  return false;
+		}
+	});
+  });
+});
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -26,6 +72,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
+
+app.use(function(req,res,next){
+  res.io = io;
+  next();
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -58,5 +109,5 @@ app.use(function(err, req, res, next) {
   });
 });
 
-
-module.exports = app;
+server.listen(3000);
+module.exports = {app:app, server:server};
