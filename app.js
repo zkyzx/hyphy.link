@@ -16,20 +16,7 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-mongoose.connect('mongodb://127.0.0.1:27017/hldb', function(error){
-    if (error){
-        console.log(error);
-    }
-});
-
-var Schema = mongoose.Schema;
-var HlinkSchema = new Schema(({
-    shortLink: String,
-    longLink: String
-}))
-
-var Hlink = mongoose.model('links', HlinkSchema);
-
+global.Hlink = functions.mongooseConnection();
 // On submit, generate new short link and emit value back to client to display.
 io.on('connection', function(socket){
   socket.on('link submit', function(link){
@@ -40,7 +27,7 @@ io.on('connection', function(socket){
 	    (function(){
 		  shortLink =  functions.genRandomString();
 		  originalLink = link;
-		  Hlink.find({shortLink: shortLink}, function(err, docs){
+		  global.Hlink.find({shortLink: shortLink}, function(err, docs){
 		    if (docs[0]){
 		      console.log("Overwriting hlink" + docs[0].shortLink);
 		    };
@@ -58,6 +45,7 @@ io.on('connection', function(socket){
 	});
   });
 });
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

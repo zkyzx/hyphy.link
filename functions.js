@@ -1,4 +1,5 @@
 var MongoClient = require('mongodb').MongoClient;
+var mongoose = require('mongoose');
 
 exports = module.exports.genRandomString = function(){
    // Generate random 5 character alphanumeric.
@@ -55,4 +56,20 @@ exports = module.exports.validateUrl = function(url, callback){
 		req.on('error', function(err){
 			callback({"error" : true, "url": url});
 		})
+}
+
+exports = module.exports.mongooseConnection = function(){
+	mongoose.connect('mongodb://127.0.0.1:27017/hldb', function(error){
+		if (error){
+			console.log(error);
+		}
+	});
+
+	var Schema = mongoose.Schema;
+	var HlinkSchema = new Schema(({
+		shortLink: String,
+		longLink: String
+	}))
+
+	return  mongoose.model('links', HlinkSchema);
 }

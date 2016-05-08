@@ -1,9 +1,9 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var functions = require("../functions.js");
-var mongoose = require('mongoose');
 
 var router = express.Router();
+
+var functions = require("../functions.js");
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
 // redirect handler
 router.get('/:url', function(req, res){
     url = req.url.replace('\/', '');
-    Hlink.find({shortLink: url}, function(err, docs){
+    global.Hlink.find({shortLink: url}, function(err, docs){
         if (docs[0]){
 			targetUrl = docs[0].longLink;
 			res.statusCode = 302;
@@ -31,7 +31,7 @@ router.get('/link', function(req, res){
     console.log( functions.genRandomString() );
 });
 router.get('/api/queryentries', function(req, res){
-    Hlink.find({}, function(err, docs){
+    global.Hlink.find({}, function(err, docs){
         res.json(docs)
     })
 });
