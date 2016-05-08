@@ -3,7 +3,6 @@ var bodyParser = require('body-parser');
 
 var router = express.Router();
 
-var functions = require("../functions.js");
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
