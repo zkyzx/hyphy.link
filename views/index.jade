@@ -27,7 +27,7 @@ block content
         console.log(e);
       });
 
-      var socket = io.connect('//localhost:3000');
+      var socket = io.connect();
       $('#intakeBtn').click(function(){
          socket.emit('link submit', $('#mput').val());
          $('#mput').val('');
