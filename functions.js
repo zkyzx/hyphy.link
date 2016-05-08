@@ -45,7 +45,7 @@ exports = module.exports.queryAll = function(){
 
 exports = module.exports.validateUrl = function(url, callback){
      if (url == ''){
-	   callback({"error": true, "url": url});
+	   var url = 'sijsijpjw'; 
      }
 	// Validate if the target url is active or not.
 	  var http = require('http'),
