@@ -24,7 +24,6 @@ router.get('/:url', function(req, res){
 });
 
 
-
 /*
 router.get('/link', function(req, res){
     console.log( functions.genRandomString() );

@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-var app = require('../app').app;
+var app = require('../app');
 var debug = require('debug')('hyphy.link:server');
 var http = require('http');
 
@@ -19,8 +19,9 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-var server = require('../app').server;
-
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);
+require('../sockets/base')(io);
 /**
  * Listen on provided port, on all network interfaces.
  */

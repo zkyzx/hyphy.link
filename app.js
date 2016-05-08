@@ -7,44 +7,14 @@ var bodyParser = require('body-parser');
 
 var functions = require("./functions.js");
 
+var app = express();
+
 var mongoose = require('mongoose');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
 
-var app = express();
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
-
 global.Hlink = functions.mongooseConnection();
-// On submit, generate new short link and emit value back to client to display.
-io.on('connection', function(socket){
-  socket.on('link submit', function(link){
-  // strip protocol from url string to make it easier to use response.redirect
-    link = link.replace(/http:\/\/|https:\/\//i, '');
-	functions.validateUrl(link, function(status){
-	  if (!status.error){
-	    (function(){
-		  shortLink =  functions.genRandomString();
-		  originalLink = link;
-		  global.Hlink.find({shortLink: shortLink}, function(err, docs){
-		    if (docs[0]){
-		      console.log("Overwriting hlink" + docs[0].shortLink);
-		    };
-		  });
-
-		  functions.insertLink(shortLink, originalLink);
-		  socket.emit('link ready', "hyphy.link/" + shortLink);
-		  return false;
-		})();
-	  } else {
-	      console.log("an error occured while attempting to connect to "+ link);
-		  socket.emit('link error', "An error occured while attempting to shorten that url.");
-		  return false;
-		}
-	});
-  });
-});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -97,4 +67,4 @@ app.use(function(err, req, res, next) {
   });
 });
 
-module.exports = {app:app, server:server};
+module.exports = app;
