@@ -4,9 +4,15 @@ html
     title= title
     link(rel='stylesheet', type='text/css',href='/stylesheets/semantic.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
+  div(class="ui basic  segment")
+    h3(class="header brand")= title
   body
     script(src='http://code.jquery.com/jquery-1.11.1.js')
     script(src='semantic/dist/semantic.min.js')
     script(src='https://cdn.socket.io/socket.io-1.4.5.js')
+    script(src='/javascripts/clipboard.js')
     block content
+    div(id="footer")
+      div(id="cr-notice").
+        &#169; 2016 hyphy.link ALL RIGHTS RESERVED
 

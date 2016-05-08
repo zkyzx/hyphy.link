@@ -1,8 +1,79 @@
+@import url(https://fonts.googleapis.com/css?family=Satisfy);
+
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background: #209cdf;
 }
 
 a {
   color: #00B7FF;
+}
+
+div#status-msg{
+    position:absolute;
+    top: 0px;
+    width: 100%;
+    border: 1px solid grey;
+    text-align: center;
+    background: #EDE04D none repeat scroll 0% 0%;
+    padding: 8px;
+    box-shadow: 3px 0px 3px #888888;
+    display: none;
+}
+
+
+.spaced{
+    padding-top: 13% !important;
+
+}
+.brand{
+    color: white;
+    font-size:30px;
+    font-family: 'Satisfy', cursive;
+}
+
+#linkDisplay{
+    font-size: 20px;
+    color: #EDE04D;
+position: absolute;
+top: 92px;
+left: 107px;
+}
+
+#intakeBtn{
+width: 100px;
+border-radius: 0px !important;
+}
+
+#mput{
+    border-radius: 0px !important;
+}
+
+div#footer{
+position: fixed;
+bottom: 0px;
+height: 25px;
+width: 100%;
+background: #343436;
+border-bottom: 1px solid black;
+border-top: 1px solid black;
+box-shadow: 0 0 1px black;
+}
+
+#cr-notice{
+position: fixed;
+color: grey;
+font-size:10px;
+right: 4px;
+padding-top:4px;
+}
+#copy-btn{
+  display: none;
+  width: 100%;
+}
+
+#copy-btn-contain{
+position: absolute;
+width: 80px;
+top: 87px;
 }

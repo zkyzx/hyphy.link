@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 var app = express();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
+
 http.listen(8080, "127.0.0.1");
 
 
@@ -31,18 +32,25 @@ var Hlink = mongoose.model('links', HlinkSchema);
 // On submit, generate new short link and emit value back to client to display.
 io.on('connection', function(socket){
 	socket.on('link submit', function(link){
+        // strip protocol from url string to make it easier to use response.redirect
+        link = link.replace(/http:\/\/|https:\/\//i, '');
 		functions.validateUrl(link, function(status){
 			if (!status.error){
 				(function(){
-					shortenLink =  functions.genRandomString();
+					shortLink =  functions.genRandomString();
 					originalLink = link;
-					functions.insertLink(shortenLink, originalLink);
-					socket.emit('link ready', "hyphy.link/" + shortenLink);
+					Hlink.find({shortLink: shortLink}, function(err, docs){
+                       if (docs[0]){
+                         console.log("Overwriting hlink" + docs[0].shortLink);
+                       };
+					});
+					functions.insertLink(shortLink, originalLink);
+					socket.emit('link ready', "hyphy.link/" + shortLink);
 					return false;
 				})();
 			} else {
 			   console.log("an error occured while attempting to connect to "+ link);
-			   socket.emit('link ready', "");
+			   socket.emit('link error', "An error occured while attempting to shorten that url.");
 			   return false;
 			}
 		});
@@ -55,31 +63,28 @@ router.get('/', function(req, res, next) {
 });
 
 
-router.get('/api/queryentries', function(req, res){
-    Hlink.find({}, function(err, docs){
-        res.json(docs)
-    })
+// redirect handler
+router.get('/:url', function(req, res){
+    url = req.url.replace('\/', '');
+    Hlink.find({shortLink: url}, function(err, docs){
+        targetUrl = docs[0].longLink;
+        res.statusCode = 302;
+        res.redirect("http://" +targetUrl);
+        res.end();
+    });
 });
-
-
-router.post('/api/newentry/', function(req, res){
-    sl = functions.genRandomString();
-    ll = req.query.ll;
-    console.log({"sl":sl, "ll": ll});
-    functions.insertLink(sl,ll);
-    res.send({"generated":"hyphy.link/"+sl});
-});
-
 
 
 /*
 router.get('/link', function(req, res){
     console.log( functions.genRandomString() );
 });
-
-router.get('/:q', function(req, res){
-    functions.insertLink("short","long");
+router.get('/api/queryentries', function(req, res){
+    Hlink.find({}, function(err, docs){
+        res.json(docs)
+    })
 });
+
 */
 
 

@@ -1,20 +1,32 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
-
-  div(class="ui one column centered grid")
-    div(class="row")
-    div(class="row")
-      div(class="column six wide")
-        div(id="urlIntake", class="ui massive input", style="width: 100%;")
-          input(type="text", id="mput" placeholder="Paste, shorten and share")
-          button(id="intakeBtn", class="ui button").
-            Shorten
-        div(id='linkDisplay')
+  div(class="four column centered row")
+    div(class="column")
+      div(id="status-msg").
+        ""
+  div(class="ui one column center aligned grid spaced")
+    div(class="column eight wide")
+      div(id="urlIntake", class="ui massive input", style="width: 100%;")
+        input(type="text", id="mput" placeholder="Paste, shorten and share")
+        button(id="intakeBtn", class="ui button").
+          Shorten
+      div(id='linkDisplay')
+      div(id='copy-btn-contain')
+        button(data-clipboard-target="#linkDisplay" class="btn ui violet button" id="copy-btn").
+          Copy
 
   script.
+      var clipboard = new Clipboard('.btn');
+      clipboard.on('success',function(e){
+         console.log(e);
+         $('div#status-msg').html(e.text + " copied to clipboard.").slideDown('down').delay(2000).slideUp('fast');
+      });
+
+      clipboard.on('error', function(e){
+        console.log(e);
+      });
+
       var socket = io.connect('http://localhost:8080');
       $('#intakeBtn').click(function(){
          socket.emit('link submit', $('#mput').val());
@@ -25,5 +37,11 @@ block content
       socket.on('link ready', function(hlink){
         console.log(hlink);
         $('div#linkDisplay').hide().html(hlink).fadeIn('slow');
+        $('#copy-btn').fadeIn("slow");
       })
+
+      socket.on('link error', function(msg){
+          console.log(msg);
+         $('div#status-msg').html(msg).slideDown('down').delay(2000).slideUp('fast');
+      });
 
