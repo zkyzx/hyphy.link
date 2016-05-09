@@ -7,10 +7,18 @@ module.exports = function(io) {
   // On submit, generate new short link and emit value back to client for display.
   io.on('connection', function(socket){
     socket.on('link submit', function(link){
-    // strip protocol from url string to make it easier ( more predicable ) when use response.redirect
-	link = link.replace(/http:\/\/|https:\/\//i, '');
-    // Validate url by attempting to connect to it. Failed requests are considered invalid and will not be stored.
-	  functions.validateUrl(link, function(status){
+    // Check if the link contains the protocol if not prepend the protocol in order for the
+        // extraction of the urls root.
+    if (link.indexOf("http") ==  -1 && link !== ""){
+        link = "http://" + link;
+    }
+
+    // extract the root
+    pathArray = link.split( '/'  );root = pathArray[2];
+
+    console.log(pathArray);
+    // Validate the url root by attempting to connect to it. Failed requests are considered invalid and will not be stored.
+	  functions.validateUrl(root, function(status){
           // if the request to the target url succeeds.
 	    if (!status.error){
 		  (function generateNewEntry(){
