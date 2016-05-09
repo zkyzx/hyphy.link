@@ -17,6 +17,9 @@ module.exports = function(io) {
     pathArray = link.split( '/'  );root = pathArray[2];
 
     console.log(root);
+    if (!root){
+        root = "jdijdidpi";
+    }
     // Validate the url root by attempting to connect to it. Failed requests are considered invalid and will not be stored.
 	  functions.validateUrl(root, function(status){
           // if the request to the target url succeeds.
