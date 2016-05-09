@@ -18,7 +18,7 @@ router.get('/:url', function(req, res){
         if (docs[0]){
 			originalLink = docs[0].longLink;
 			res.statusCode = 302;
-			res.redirect("http://" + originalLink);
+			res.redirect(originalLink);
         } else {
           res.statusCode = 404;
           res.render('error');
