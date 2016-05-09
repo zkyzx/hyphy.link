@@ -1,26 +1,27 @@
 var express = require('express');
-var bodyParser = require('body-parser');
-
 var router = express.Router();
 
 
-/* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'hyphy.link | Simple URL Shortener' });
 });
 
-
 // redirect handler
 router.get('/:url', function(req, res){
-    url = req.url.replace('\/', '');
-    global.Hlink.find({shortLink: url}, function(err, docs){
+    // replace leading forward slash
+    requestedUrl = req.url.replace('\/', '');
+    // search mongo db for any entry matching the short link specified.
+    // if a match is found, then redirect user to the respective long link.
+    // if a match is not found, then trigger a 404.
+
+    global.Hlink.find({shortLink: requestedUrl}, function(err, docs){
         if (docs[0]){
-			targetUrl = docs[0].longLink;
+			originalLink = docs[0].longLink;
 			res.statusCode = 302;
-			res.redirect("http://" +targetUrl);
+			res.redirect("http://" + originalLink);
         } else {
-console.log("test");
-          res.render('error', {message: 'test'});
+          res.statusCode = 404;
+          res.render('error');
         }
     });
 });

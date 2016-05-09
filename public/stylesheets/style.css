@@ -1,40 +1,40 @@
 @import url(https://fonts.googleapis.com/css?family=Satisfy);
 
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background: #209cdf;
+font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+background: #209cdf;
 }
 
 a {
-  color: #00B7FF;
+color: #00B7FF;
 }
 
 div#status-msg{
-    position:absolute;
-    top: 0px;
-    width: 100%;
-    border: 1px solid grey;
-    text-align: center;
-    background: #EDE04D none repeat scroll 0% 0%;
-    padding: 8px;
-    box-shadow: 3px 0px 3px #888888;
-    display: none;
+position:absolute;
+top: 0px;
+width: 100%;
+border: 1px solid grey;
+text-align: center;
+background: #EDE04D none repeat scroll 0% 0%;
+padding: 8px;
+box-shadow: 3px 0px 3px #888888;
+display: none;
 }
 
 
 .spaced{
-    padding-top: 13% !important;
+padding-top: 13% !important;
 
 }
 .brand{
-    color: white;
-    font-size:30px;
-    font-family: 'Satisfy', cursive;
+color: white;
+font-size:30px;
+font-family: 'Satisfy', cursive;
 }
 
 #linkDisplay{
-    font-size: 20px;
-    color: #EDE04D;
+font-size: 20px;
+color: #EDE04D;
 position: absolute;
 top: 92px;
 left: 107px;
@@ -46,7 +46,7 @@ border-radius: 0px !important;
 }
 
 #mput{
-    border-radius: 0px !important;
+border-radius: 0px !important;
 }
 
 div#footer{
@@ -68,8 +68,8 @@ right: 4px;
 padding-top:4px;
 }
 #copy-btn{
-  display: none;
-  width: 100%;
+display: none;
+width: 100%;
 }
 
 #copy-btn-contain{

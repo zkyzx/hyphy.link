@@ -44,22 +44,24 @@ exports = module.exports.queryAll = function(){
 
 
 exports = module.exports.validateUrl = function(url, callback){
+     // an empty url will get garbled characters to ensure validation failure.
      if (url == ''){
-	   var url = 'sijsijpjw'; 
+	   var url = 'sijsijpjw';
      }
-	// Validate if the target url is active or not.
+
+	// Validate if the target url is active or not by sending a request to it.
 	  var http = require('http'),
-		options = {method: 'HEAD', host: url, port: 80, path: '/'},
-		req = http.request(options, function(r){
+		req = http.request({method: 'HEAD', host: url, port: 80, path: '/'}, function(r){
 		  callback({"error": false, "url": url});
 	    });
-
-        req.end();
 
 		req.on('error', function(err){
 			callback({"error" : true, "url": url});
 		})
+
+        req.end();
 }
+
 
 exports = module.exports.mongooseConnection = function(){
 	mongoose.connect('mongodb://127.0.0.1:27017/hldb', function(error){
