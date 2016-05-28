@@ -4,26 +4,26 @@ var exec = require('child_process').exec;
 
 
 router.post('/deploy', function(req, res, next) {
-   var body = req.body;
-   var _event = body.hook.events[0];
-   var _sender = body.sender.login;
+      _event = req.headers["x-github-event"];
 
-   if (_event == "push"){
       console.log("Pulling lastest master from remote.");
-
-      exec("git status && git  pull origin master", function(err, stdout, stderr){
-         if(err){
+  
+      if ( _event == "push"){ 
+          exec("git status && git pull origin master", function(err, stdout, stderr){
+            if(err){
               console.log(err);
-         }
+              res.status(500);
+              res.send();
+            }
 
-         else {
-             console.log(stdout);
-         }
-      });
-   }
+            else {
+              console.log(stdout);
+              res.status(200);
+              res.send();
+            }
+          });
+     }
 
-   res.status(200);
-   res.send();
 });
 
 
