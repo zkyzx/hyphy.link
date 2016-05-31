@@ -19,8 +19,12 @@ block content
   script.
       var clipboard = new Clipboard('.btn');
       clipboard.on('success',function(e){
-         console.log(e);
-         $('div#status-msg').html(e.text + " copied to clipboard.").slideDown('down').delay(2000).slideUp('fast');
+        statusMessageBanner = $('div#status-msg');
+        statusMessageBanner.css("background", "green");
+        statusMessageBanner.html(e.text + " copied to clipboard.")
+          .slideDown('slow')
+          .delay(2000)
+          .slideUp('fast');
       });
 
       clipboard.on('error', function(e){
@@ -35,13 +39,13 @@ block content
       });
 
       socket.on('link ready', function(hlink){
-        console.log(hlink);
         $('div#linkDisplay').hide().html(hlink).fadeIn('slow');
         $('#copy-btn').fadeIn("slow");
       })
 
       socket.on('link error', function(msg){
-          console.log(msg);
-         $('div#status-msg').html(msg).slideDown('down').delay(2000).slideUp('fast');
+        statusMessageBanner = $('div#status-msg');
+        statusMessageBanner.css("background", "yellow");
+        statusMessageBanner.html(msg).slideDown('slow').delay(2000).slideUp('fast');
       });
 

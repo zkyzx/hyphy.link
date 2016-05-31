@@ -5,17 +5,15 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var functions = require("./functions");
-
 var app = express();
 
-var mongoose = require('mongoose');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var hooks = require('./routes/hooks');
 
-
-global.Hlink = functions.mongooseConnection();
+var mongoose = require('mongoose');
+// db init
+mongoose.connect('mongodb://127.0.0.1:27017/hldb');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
