@@ -4,18 +4,21 @@ html
     meta(name="viewport", content="width=device-width, initial-scale=1")
     title= title
     link(rel='stylesheet', type='text/css',href='/stylesheets/semantic.min.css')
+    link(rel='stylesheet', type='text/css', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
   div(class="ui basic  segment")
     h3(class="header brand")
       span(style="color: orange")= 'hyphy'
       span='.link'
-  body
+  body(class="hyphy")
     script(src='https://code.jquery.com/jquery-1.11.1.js')
     script(src='semantic/dist/semantic.min.js')
     script(src='https://cdn.socket.io/socket.io-1.4.5.js')
-    script(src='/javascripts/clipboard.js')
-    block content
+
+    main(class="content")
+      block content
+
     div(id="footer")
-      div(id="cr-notice").
+      span(id="cr-notice").
         &#169; 2016 hyphy.link
 

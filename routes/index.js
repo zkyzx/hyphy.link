@@ -10,8 +10,6 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'hyphy.link | Simple URL Shortener' });
 });
 
-
-
 router.get('/:url', function(req, res) {
     // replace leading forward slash
     url = req.url.replace('\/', '');

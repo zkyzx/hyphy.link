@@ -1,4 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Satisfy);
+
 body {
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
     background: #209cdf;
@@ -8,12 +9,12 @@ a {
     color: #00B7FF;
 }
 
-div#status-msg {
+#status-msg {
     position: absolute;
     top: 0px;
-    min-height: 60px;
-    font-size: 20px; 
-    width: 100%;
+    left: 18%;
+    font-size: 16px;
+    width: 60%;
     border: 1px solid grey;
     text-align: center;
     background: #EDE04D none repeat scroll 0% 0%;
@@ -32,55 +33,108 @@ div#status-msg {
     font-family: 'Satisfy', cursive;
 }
 
-#linkDisplay {
-    font-size: 20px;
-    color: #EDE04D;
-    position: absolute;
-    top: 92px;
-    left: 107px;
-}
-
-#intakeBtn {
+#input-action-btn {
     width: 100px;
     border-radius: 3px !important;
 }
 
-#mput {
-    border-radius: 3px !important;
-    font-size: 80%;
-}
+#footer {
 
-div#footer {
-    position: fixed;
-    bottom: 0px;
-    height: 25px;
-    width: 100%;
     background: #343436;
-    border-bottom: 1px solid black;
-    border-top: 1px solid black;
-    box-shadow: 0 0 1px black;
+
 }
 
 #cr-notice {
-    position: fixed;
     color: grey;
     font-size: 10px;
     right: 4px;
     padding-top: 4px;
+    padding-bottom: 4px;
+    padding-right: 4px;
+    float: right;
 }
 
-#copy-btn {
+
+#copy-btn{
     display: none;
-    width: 100%;
 }
 
-#copy-btn-contain {
-    position: absolute;
-    width: 80px;
-    top: 87px;
-}
+
+
 
 #error-msg {
     font-size: 180px;
     color: white;
+}
+
+.social .fbtn {
+    width: 50px;
+    display: inline-block;
+    color: #fff;
+    text-align: center;
+    line-height: 18px;
+    float: left;
+}
+
+.social .fa {
+    padding: 15px 0px
+}
+
+.facebook {
+    background-color: #3b5998;
+}
+
+.twitter {
+    background-color: #55acee;
+}
+
+.linkedin {
+    background-color: #0077b5;
+}
+
+.buffer {
+    background-color: #323b43;
+}
+
+.share-button.sharer {
+    height: 20px;
+    padding: 100px;
+}
+
+.share-button.sharer .social.active.top {
+    transform: scale(1) translateY(-10px);
+}
+
+.share-button.sharer .social.active {
+    opacity: 1;
+    transition: all 0.4s ease 0s;
+    visibility: visible;
+}
+
+
+.share-button.sharer .social.top {
+    margin-top: -80px;
+    transform-origin: 0 0 0;
+}
+
+.share-button.sharer .social {
+    margin-left: -65px;
+    opacity: 0;
+    transition: all 0.4s ease 0s;
+    visibility: hidden;
+}
+
+
+.hyphy {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+}
+
+.social.buttons{
+	display: none;
 }

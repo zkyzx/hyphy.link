@@ -1,51 +1,101 @@
 extends layout
-
 block content
-  div(class="four column centered row")
-    div(class="column")
-      div(id="status-msg").
-        ""
-  div(class="ui one column center aligned grid spaced")
-    div(class="column eight wide")
-      div(id="urlIntake", class="ui massive input", style="width: 100%;")
-        input(type="text", id="mput" placeholder="Paste, shorten and share")
-        button(id="intakeBtn", class="ui button").
-          Shorten
-      div(id='linkDisplay')
-      div(id='copy-btn-contain')
-        button(data-clipboard-target="#linkDisplay" class="btn ui violet button" id="copy-btn").
-          Copy
+  .four.column.centered.row
+    .column
+      #status-msg
+
+  .ui.stackable.one.column.center.aligned.grid.spaced
+    .row
+      .column.eight.wide
+        div.ui.fluid.massive.action.input
+          input#hyphy-input-field(type='text', placeholder='Paste, shorten and share')
+          div#default-btn.ui.blue.button.
+            Shorten
+    
+    .row
+      .ui.column.eight.wide.centered
+        .social.buttons
+          a#fb-btn.fbtn.share.facebook(href='https://www.facebook.com/sharer/sharer.php?u=')
+            i.fa.fa-facebook
+          a#tw-btn.fbtn.share.twitter(href='https://twitter.com/intent/tweet?text=')
+            i.fa.fa-twitter
+          a#in-btn.fbtn.share.linkedin(href='http://www.linkedin.com/shareArticle?mini=true&url=')
+            i.fa.fa-linkedin
 
   script.
-      var clipboard = new Clipboard('.btn');
-      clipboard.on('success',function(e){
+      var socket = io.connect();
+
+      $('#default-btn').click(function() {
+        if ($(this).hasClass('copyEnabled')){
+
+          (function copyToClipBoard(){
+            var $temp = $("<input>");
+            var link = $("#hyphy-input-field").val();
+            $("body").append($temp);
+            $temp.val(link).select();
+            document.execCommand("copy");
+            $temp.remove();
+            statusMessageBanner = $('div#status-msg');
+            statusMessageBanner.css("background", "#66CD00");
+            statusMessageBanner.html(link + " copy to clipboard.")
+              .slideDown('slow')
+              .delay(2000)
+              .slideUp('fast');
+          })();
+
+        }
+
+        else {
+          socket.emit('link submit', $('#hyphy-input-field').val());
+        }
+        
+      });
+
+      socket.on('link ready', function(link){
+        $('#hyphy-input-field').val(link);
+        $("#default-btn")
+          .text("Copy")
+          .addClass('copyEnabled');
+        $('<button id="close-btn" class="ui grey button">X</button>').insertBefore('#default-btn');
+        
+        (function buildSocial(){
+          $("a#fb-btn").attr("href",$("a#fb-btn").attr("href") + link );
+          $("a#tw-btn").attr("href",$("a#tw-btn").attr("href") + link +"&url=" + link + "&title=" + link );
+          $("a#in-btn").attr("href",$("a#in-btn").attr("href") + link +"&title=" + link );
+          $(".social.buttons").show();
+        })();
+
+      });
+
+      socket.on('link error', function(msg){
         statusMessageBanner = $('div#status-msg');
-        statusMessageBanner.css("background", "green");
-        statusMessageBanner.html(e.text + " copied to clipboard.")
+        statusMessageBanner.css("background", "yellow");
+        statusMessageBanner.html(msg)
           .slideDown('slow')
           .delay(2000)
           .slideUp('fast');
       });
 
-      clipboard.on('error', function(e){
-        console.log(e);
+      $("#hyphy-input-field").on("input", function() {
+        if ($("#default-btn").hasClass('copyEnabled')){
+          $("#close-btn").remove();
+          $("#default-btn")
+            .text("Shorten")
+            .removeClass('copyEnabled');
+            $(".social.buttons").hide();
+        }
       });
 
-      var socket = io.connect();
-      $('#intakeBtn').click(function(){
-         socket.emit('link submit', $('#mput').val());
-         $('#mput').val('');
-         return false;
+
+      $("body").on("click", '#close-btn', function() {
+        if ($("#default-btn").hasClass('copyEnabled')){
+          $('#hyphy-input-field').val("");
+          $("#close-btn").remove();
+          $("#default-btn")
+            .text("Shorten")
+            .removeClass('copyEnabled');
+            $(".social.buttons").hide();
+        }
       });
 
-      socket.on('link ready', function(hlink){
-        $('div#linkDisplay').hide().html(hlink).fadeIn('slow');
-        $('#copy-btn').fadeIn("slow");
-      })
-
-      socket.on('link error', function(msg){
-        statusMessageBanner = $('div#status-msg');
-        statusMessageBanner.css("background", "yellow");
-        statusMessageBanner.html(msg).slideDown('slow').delay(2000).slideUp('fast');
-      });
-
+    
