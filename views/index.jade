@@ -15,15 +15,19 @@ block content
     .row
       .ui.column.eight.wide.centered
         .social.buttons
-          a#fb-btn.fbtn.share.facebook(href='https://www.facebook.com/sharer/sharer.php?u=')
+          a#fb-btn.fbtn.share.facebook(href='#')
             i.fa.fa-facebook
-          a#tw-btn.fbtn.share.twitter(href='https://twitter.com/intent/tweet?text=')
+          a#tw-btn.fbtn.share.twitter(href='#')
             i.fa.fa-twitter
-          a#in-btn.fbtn.share.linkedin(href='http://www.linkedin.com/shareArticle?mini=true&url=')
+          a#in-btn.fbtn.share.linkedin(href='#')
             i.fa.fa-linkedin
 
   script.
       var socket = io.connect();
+
+      var fblink = "https://www.facebook.com/sharer/sharer.php?u="
+      var twlink = "https://twitter.com/intent/tweet?text="
+      var inlink = "http://www.linkedin.com/shareArticle?mini=true&url="
 
       $('#default-btn').click(function() {
         if ($(this).hasClass('copyEnabled')){
@@ -59,9 +63,9 @@ block content
         $('<button id="close-btn" class="ui grey button">X</button>').insertBefore('#default-btn');
         
         (function buildSocial(){
-          $("a#fb-btn").attr("href",$("a#fb-btn").attr("href") + link );
-          $("a#tw-btn").attr("href",$("a#tw-btn").attr("href") + link +"&url=" + link + "&title=" + link );
-          $("a#in-btn").attr("href",$("a#in-btn").attr("href") + link +"&title=" + link );
+          $("a#fb-btn").attr( "href", fblink + link );
+          $("a#tw-btn").attr( "href", twlink + link );
+          $("a#in-btn").attr( "href", inlink + link );
           $(".social.buttons").show();
         })();
 
