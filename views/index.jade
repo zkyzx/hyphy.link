@@ -102,4 +102,9 @@ block content
         }
       });
 
-    
+      
+      $("#hyphy-input-field").keyup(function (e){
+          if (e.keyCode == 13){ // return key
+            $("#default-btn").trigger('click');
+          }
+      });
