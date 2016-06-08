@@ -2,16 +2,20 @@ extends layout
 block content
   .four.column.centered.row
     .column
-      #status-msg
+      .ui.floating.message#status-msg
 
-  .ui.stackable.one.column.center.aligned.grid.spaced
+  .ui.stackable.one.column.center.aligned.grid
+    .row
+    .row
+    .row
+    .row
+    .row
+    .row
     .row
       .column.eight.wide
-        div.ui.fluid.massive.action.input
+        .ui.fluid.massive.action.input
           input#hyphy-input-field(type='text', placeholder='Paste, shorten and share')
-          div#default-btn.ui.blue.button.
-            Shorten
-    
+          #default-btn.ui.blue.button Shorten
     .row
       .ui.column.eight.wide.centered
         .social.buttons
@@ -21,6 +25,7 @@ block content
             i.fa.fa-twitter
           a#in-btn.fbtn.share.linkedin(href='#')
             i.fa.fa-linkedin
+    .row
 
   script.
       var socket = io.connect();
@@ -28,6 +33,17 @@ block content
       var fblink = "https://www.facebook.com/sharer/sharer.php?u="
       var twlink = "https://twitter.com/intent/tweet?text="
       var inlink = "http://www.linkedin.com/shareArticle?mini=true&url="
+
+      function switchButtons(){
+          $('#hyphy-input-field').val("");
+          $("#close-btn").remove();
+          $("#default-btn")
+            .text("Shorten")
+              .removeClass('green')
+              .addClass('blue')
+            .removeClass('copyEnabled');
+            $(".social.buttons").hide();
+      }
 
       $('#default-btn').click(function() {
         if ($(this).hasClass('copyEnabled')){
@@ -39,8 +55,14 @@ block content
             $temp.val(link).select();
             document.execCommand("copy");
             $temp.remove();
+
             statusMessageBanner = $('div#status-msg');
-            statusMessageBanner.css("background", "#66CD00");
+
+            if (statusMessageBanner.hasClass('negative')){
+              statusMessageBanner.removeClass('negative');
+            }
+            statusMessageBanner.addClass("success");
+
             statusMessageBanner.html(link + " copied to clipboard.")
               .slideDown('slow')
               .delay(2000)
@@ -59,6 +81,8 @@ block content
         $('#hyphy-input-field').val(link);
         $("#default-btn")
           .text("Copy")
+          .removeClass('blue')
+          .addClass('green')
           .addClass('copyEnabled');
         $('<button id="close-btn" class="ui grey button">X</button>').insertBefore('#default-btn');
         
@@ -73,33 +97,31 @@ block content
 
       socket.on('link error', function(msg){
         statusMessageBanner = $('div#status-msg');
-        statusMessageBanner.css("background", "yellow");
+        if (statusMessageBanner.hasClass('success')){
+            statusMessageBanner.removeClass('success');
+
+        }
+        statusMessageBanner.addClass("negative");
         statusMessageBanner.html(msg)
           .slideDown('slow')
           .delay(2000)
           .slideUp('fast');
       });
 
+
+
+
       $("#hyphy-input-field").on("input", function() {
-        if ($("#default-btn").hasClass('copyEnabled')){
-          $("#close-btn").remove();
-          $("#default-btn")
-            .text("Shorten")
-            .removeClass('copyEnabled');
-            $(".social.buttons").hide();
-        }
+          if ($("#default-btn").hasClass('copyEnabled')){
+              switchButtons();
+          }
       });
 
 
       $("body").on("click", '#close-btn', function() {
-        if ($("#default-btn").hasClass('copyEnabled')){
-          $('#hyphy-input-field').val("");
-          $("#close-btn").remove();
-          $("#default-btn")
-            .text("Shorten")
-            .removeClass('copyEnabled');
-            $(".social.buttons").hide();
-        }
+          if ($("#default-btn").hasClass('copyEnabled')){
+               switchButtons();
+          }
       });
 
       

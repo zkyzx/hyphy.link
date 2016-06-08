@@ -1,0 +1,22 @@
+html
+  body
+    .ui.middle.aligned.center.aligned.grid
+      .column
+        h2.ui.image.header
+          .content
+            | Log-in to your account
+        form.ui.large.form(action='http://s.codepen.io/voltron2112/debug/PqrEPM?', method='get')
+          .ui.stacked.secondary.segment
+            .field
+              .ui.left.icon.input
+                i.user.icon
+                input(type='text', name='email', placeholder='E-mail address')
+            .field
+              .ui.left.icon.input
+                i.lock.icon
+                input(type='password', name='password', placeholder='Password')
+            .ui.fluid.large.teal.submit.button Login
+          .ui.error.message
+        .ui.message
+          | New to us? 
+          a(href='http://s.codepen.io/voltron2112/debug/PqrEPM?') Register

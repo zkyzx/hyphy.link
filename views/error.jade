@@ -1,9 +1,18 @@
 extends layout
 
+
 block content
-  div(class="ui one column center aligned grid spaced")
-    div(class="column eight wide")
-      h1(id="error-msg").
-        404
-      h4.
-        Page not found.
+  .ui.stackable.one.column.center.aligned.grid
+    .row
+      #clouds
+        .cloud.x1
+        .cloud.x1_5
+        .cloud.x2
+        .cloud.x3
+        .cloud.x4
+        .cloud.x5
+
+      .column.eight.wide
+        .column.eight.wide
+          h1#error-msg 404
+          h2 That page was not found.

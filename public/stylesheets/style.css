@@ -12,14 +12,10 @@ a {
 #status-msg {
     position: absolute;
     top: 0px;
-    left: 18%;
-    font-size: 16px;
-    width: 60%;
+    width: 100%;
     border: 1px solid grey;
     text-align: center;
-    background: #EDE04D none repeat scroll 0% 0%;
     padding: 8px;
-    box-shadow: 3px 0px 3px #888888;
     display: none;
 }
 
@@ -30,6 +26,10 @@ a {
 .brand {
     color: white;
     font-size: 30px;
+    font-family: 'Satisfy', cursive;
+}
+
+.brand-font{
     font-family: 'Satisfy', cursive;
 }
 

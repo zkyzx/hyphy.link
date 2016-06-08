@@ -8,6 +8,7 @@ var accessRecord = require("../models/accessRecord");
 // base route handler
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'hyphy.link | Simple URL Shortener' });
+  req.flash('info', 'Flash is back!');
 });
 
 router.get('/:url', function(req, res) {
@@ -20,6 +21,7 @@ router.get('/:url', function(req, res) {
 
     Link.find({ shortLink: url }, function(err, links) {
       if (links[0]) {
+
         var newRecord = accessRecord({
             shortLink: url,
             access_time: new Date(),

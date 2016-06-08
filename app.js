@@ -27,9 +27,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 app.use('/', routes);
-app.use('/users', users);
 app.use('/hooks', hooks);
+app.use('/users', users);
 
 app.use(function(req,res,next){
   res.io = io;
